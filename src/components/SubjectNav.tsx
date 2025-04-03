@@ -10,7 +10,11 @@ interface Subject {
   icon: React.ElementType;
 }
 
-const SubjectNav = () => {
+interface SubjectNavProps {
+  onSubjectSelect?: (subjectName: string | null) => void;
+}
+
+const SubjectNav = ({ onSubjectSelect }: SubjectNavProps) => {
   const [activeSubject, setActiveSubject] = useState<string | null>(null);
   
   const subjects: Subject[] = [
@@ -24,8 +28,20 @@ const SubjectNav = () => {
   ];
 
   const handleSubjectClick = (subjectName: string) => {
-    setActiveSubject(subjectName);
-    toast.success(`Matière sélectionnée: ${subjectName}`);
+    // If clicking the already active subject, deselect it
+    const newActiveSubject = activeSubject === subjectName ? null : subjectName;
+    
+    setActiveSubject(newActiveSubject);
+    
+    if (onSubjectSelect) {
+      onSubjectSelect(newActiveSubject);
+    }
+    
+    if (newActiveSubject) {
+      toast.success(`Matière sélectionnée: ${newActiveSubject}`);
+    } else {
+      toast.info('Toutes les matières affichées');
+    }
   };
 
   return (
