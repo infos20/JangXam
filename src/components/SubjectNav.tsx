@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Book, Calculator, Flask, Globe, Music, PenTool, Award } from 'lucide-react';
+import { Book, Calculator, Beaker, Globe, Music, PenTool, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
@@ -13,7 +13,7 @@ const SubjectNav = () => {
   const subjects: Subject[] = [
     { name: 'Français', icon: Book },
     { name: 'Mathématiques', icon: Calculator },
-    { name: 'Sciences', icon: Flask },
+    { name: 'Sciences', icon: Beaker },
     { name: 'Histoire-Géo', icon: Globe },
     { name: 'Arts', icon: PenTool },
     { name: 'Musique', icon: Music },
