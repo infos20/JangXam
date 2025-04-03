@@ -5,8 +5,9 @@ import SubjectNav from '@/components/SubjectNav';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Plus } from 'lucide-react';
+import { FileText, Plus, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Input } from '@/components/ui/input';
 
 interface Lesson {
   id: number;
@@ -20,6 +21,7 @@ const Dashboard = () => {
   const [allLessons, setAllLessons] = useState<Lesson[]>([]);
   const [filteredLessons, setFilteredLessons] = useState<Lesson[]>([]);
   const [activeSubject, setActiveSubject] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -37,14 +39,27 @@ const Dashboard = () => {
     setFilteredLessons(lessons);
   }, []);
 
-  // Filter lessons when active subject changes
+  // Filter lessons when active subject changes or search query changes
   useEffect(() => {
+    let filtered = allLessons;
+    
+    // Filter by subject if one is selected
     if (activeSubject) {
-      setFilteredLessons(allLessons.filter(lesson => lesson.subject === activeSubject));
-    } else {
-      setFilteredLessons(allLessons);
+      filtered = filtered.filter(lesson => lesson.subject === activeSubject);
     }
-  }, [activeSubject, allLessons]);
+    
+    // Filter by search query if present
+    if (searchQuery.trim() !== '') {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(lesson => 
+        lesson.title.toLowerCase().includes(query) || 
+        lesson.subject.toLowerCase().includes(query) ||
+        lesson.level.toLowerCase().includes(query)
+      );
+    }
+    
+    setFilteredLessons(filtered);
+  }, [activeSubject, allLessons, searchQuery]);
 
   const handleCreateLesson = () => {
     navigate('/create-lesson');
@@ -56,6 +71,10 @@ const Dashboard = () => {
 
   const handleSubjectSelect = (subject: string | null) => {
     setActiveSubject(subject);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
   };
 
   return (
@@ -73,20 +92,32 @@ const Dashboard = () => {
       <SubjectNav onSubjectSelect={handleSubjectSelect} />
       
       <section className="mt-8">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
           <h2 className="text-2xl font-semibold">
             {activeSubject ? `${activeSubject} - Fiches Pédagogiques` : 'Mes Fiches Pédagogiques'}
           </h2>
-          <Button onClick={handleCreateLesson} className="bg-primary">
-            <Plus className="mr-2 h-4 w-4" />
-            Nouvelle Fiche
-          </Button>
+          <div className="flex gap-2 w-full md:w-auto">
+            <div className="relative flex-grow md:flex-grow-0 md:w-64">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Rechercher..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="pl-9"
+              />
+            </div>
+            <Button onClick={handleCreateLesson} className="bg-primary">
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvelle Fiche
+            </Button>
+          </div>
         </div>
         
         {filteredLessons.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredLessons.map((lesson) => (
-              <Card key={lesson.id} className="overflow-hidden border border-border/50">
+              <Card key={lesson.id} className="overflow-hidden border border-border/50 hover:shadow-md transition-all">
                 <CardHeader className="bg-muted/30 p-4">
                   <CardTitle className="text-lg">{lesson.title}</CardTitle>
                 </CardHeader>
@@ -123,7 +154,9 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="text-center p-8 border border-dashed rounded-md">
-            <p className="text-muted-foreground mb-4">Aucune fiche trouvée pour cette matière.</p>
+            <p className="text-muted-foreground mb-4">
+              {searchQuery ? 'Aucune fiche ne correspond à votre recherche.' : 'Aucune fiche trouvée pour cette matière.'}
+            </p>
             <Button onClick={handleCreateLesson} variant="outline">
               <Plus className="mr-2 h-4 w-4" />
               Créer une première fiche
