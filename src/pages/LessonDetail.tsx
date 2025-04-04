@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Printer, Edit, Star, Clock as ClockIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import Clock from '@/components/Clock';
+import NavigationMenu from '@/components/NavigationMenu';
 
 interface Lesson {
   id: number;
@@ -160,102 +161,106 @@ const LessonDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-4 md:p-8">
-      <header className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="flex items-center">
-          <Button variant="ghost" onClick={() => navigate('/')} className="mr-4">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold">{lesson.title}</h1>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <span>{lesson.subject}</span>
-              <span>•</span>
-              <span>Niveau: {lesson.level}</span>
-              <span>•</span>
-              <span className="flex items-center">
-                <ClockIcon className="mr-1 h-4 w-4" />
-                {lesson.duration} min
-              </span>
+    <div className="min-h-screen bg-background text-foreground">
+      <NavigationMenu />
+      
+      <div className="p-4 md:p-8">
+        <header className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div className="flex items-center">
+            <Button variant="ghost" onClick={() => navigate('/')} className="mr-4">
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold">{lesson.title}</h1>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <span>{lesson.subject}</span>
+                <span>•</span>
+                <span>Niveau: {lesson.level}</span>
+                <span>•</span>
+                <span className="flex items-center">
+                  <ClockIcon className="mr-1 h-4 w-4" />
+                  {lesson.duration} min
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <Clock />
-      </header>
+          <Clock />
+        </header>
 
-      <div className="flex gap-2 mb-6">
-        <Button variant="outline" onClick={handlePrint}>
-          <Printer className="mr-2 h-4 w-4" />
-          Imprimer
-        </Button>
-        <Button variant="outline" onClick={handleEdit}>
-          <Edit className="mr-2 h-4 w-4" />
-          Modifier
-        </Button>
-        <Button variant="outline" onClick={handleFavorite}>
-          <Star className="mr-2 h-4 w-4" />
-          Favoris
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Card className="mb-6">
-            <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Objectifs</h2>
-              <div className="mb-4">
-                <h3 className="text-base font-medium text-muted-foreground mb-2">Objectif général</h3>
-                <p>{lesson.objectives}</p>
-              </div>
-              <div>
-                <h3 className="text-base font-medium text-muted-foreground mb-2">Objectifs spécifiques</h3>
-                <pre className="whitespace-pre-wrap font-sans">{lesson.specificObjectives}</pre>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="mb-6">
-            <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Contenu</h2>
-              <p className="mb-4">{lesson.content}</p>
-              <Separator className="my-4" />
-              <h3 className="text-base font-medium text-muted-foreground mb-2">Déroulement pédagogique</h3>
-              <pre className="whitespace-pre-wrap font-sans">{lesson.procedure}</pre>
-            </CardContent>
-          </Card>
+        <div className="flex gap-2 mb-6">
+          <Button variant="outline" onClick={handlePrint}>
+            <Printer className="mr-2 h-4 w-4" />
+            Imprimer
+          </Button>
+          <Button variant="outline" onClick={handleEdit}>
+            <Edit className="mr-2 h-4 w-4" />
+            Modifier
+          </Button>
+          <Button variant="outline" onClick={handleFavorite}>
+            <Star className="mr-2 h-4 w-4" />
+            Favoris
+          </Button>
         </div>
-        
-        <div>
-          <Card className="mb-6">
-            <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Informations</h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground">Date de création</h3>
-                  <p>{new Date(lesson.date).toLocaleDateString('fr-FR')}</p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <Card className="mb-6">
+              <CardContent className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Objectifs</h2>
+                <div className="mb-4">
+                  <h3 className="text-base font-medium text-muted-foreground mb-2">Objectif général</h3>
+                  <p>{lesson.objectives}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-muted-foreground">Matière</h3>
-                  <p>{lesson.subject}</p>
+                  <h3 className="text-base font-medium text-muted-foreground mb-2">Objectifs spécifiques</h3>
+                  <pre className="whitespace-pre-wrap font-sans">{lesson.specificObjectives}</pre>
                 </div>
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground">Niveau</h3>
-                  <p>{lesson.level}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground">Durée</h3>
-                  <p>{lesson.duration} minutes</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+            
+            <Card className="mb-6">
+              <CardContent className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Contenu</h2>
+                <p className="mb-4">{lesson.content}</p>
+                <Separator className="my-4" />
+                <h3 className="text-base font-medium text-muted-foreground mb-2">Déroulement pédagogique</h3>
+                <pre className="whitespace-pre-wrap font-sans">{lesson.procedure}</pre>
+              </CardContent>
+            </Card>
+          </div>
           
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Matériel nécessaire</h2>
-              <p>{lesson.materials}</p>
-            </CardContent>
-          </Card>
+          <div>
+            <Card className="mb-6">
+              <CardContent className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Informations</h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground">Date de création</h3>
+                    <p>{new Date(lesson.date).toLocaleDateString('fr-FR')}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground">Matière</h3>
+                    <p>{lesson.subject}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground">Niveau</h3>
+                    <p>{lesson.level}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground">Durée</h3>
+                    <p>{lesson.duration} minutes</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Matériel nécessaire</h2>
+                <p>{lesson.materials}</p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import CreateLesson from "./pages/CreateLesson";
 import LessonDetail from "./pages/LessonDetail";
+import EditLesson from "./pages/EditLesson";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/generate" element={<Index />} />
           <Route path="/create-lesson" element={<CreateLesson />} />
           <Route path="/lesson/:id" element={<LessonDetail />} />
+          <Route path="/edit-lesson/:id" element={<EditLesson />} />
+          <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
