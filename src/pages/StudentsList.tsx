@@ -12,8 +12,8 @@ import { Student } from '@/types/student';
 const StudentsList = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [classFilter, setClassFilter] = useState('');
-  const [levelFilter, setLevelFilter] = useState('');
+  const [classFilter, setClassFilter] = useState('all');
+  const [levelFilter, setLevelFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
   
@@ -117,12 +117,12 @@ const StudentsList = () => {
     }
     
     // Filter by level
-    if (levelFilter) {
+    if (levelFilter !== 'all') {
       results = results.filter(student => student.level === levelFilter);
     }
     
     // Filter by class
-    if (classFilter) {
+    if (classFilter !== 'all') {
       results = results.filter(student => student.class === classFilter);
     }
     
@@ -136,8 +136,8 @@ const StudentsList = () => {
 
   const clearFilters = () => {
     setSearchQuery('');
-    setLevelFilter('');
-    setClassFilter('');
+    setLevelFilter('all');
+    setClassFilter('all');
     setStatusFilter('all');
   };
 

@@ -52,7 +52,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({
               <SelectValue placeholder="Niveau" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Tous</SelectItem>
+              <SelectItem value="all">Tous</SelectItem>
               {levels.map((level) => (
                 <SelectItem key={level} value={level}>{level}</SelectItem>
               ))}
@@ -64,7 +64,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({
               <SelectValue placeholder="Classe" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Toutes</SelectItem>
+              <SelectItem value="all">Toutes</SelectItem>
               {classes.map((cls) => (
                 <SelectItem key={cls} value={cls}>{cls}</SelectItem>
               ))}
