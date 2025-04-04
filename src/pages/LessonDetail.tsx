@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Printer, Edit, Star, Clock } from 'lucide-react';
+import { ArrowLeft, Printer, Edit, Star, Clock as ClockIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import Clock from '@/components/Clock';
 
@@ -174,7 +174,7 @@ const LessonDetail = () => {
               <span>Niveau: {lesson.level}</span>
               <span>•</span>
               <span className="flex items-center">
-                <Clock className="mr-1 h-4 w-4" />
+                <ClockIcon className="mr-1 h-4 w-4" />
                 {lesson.duration} min
               </span>
             </div>
