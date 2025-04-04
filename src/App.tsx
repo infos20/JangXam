@@ -12,30 +12,41 @@ import LessonDetail from "./pages/LessonDetail";
 import EditLesson from "./pages/EditLesson";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import StudentsList from "./pages/StudentsList";
+import StudentDetail from "./pages/StudentDetail";
+import EvaluationsList from "./pages/EvaluationsList";
+import EvaluationDetail from "./pages/EvaluationDetail";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/generate" element={<Index />} />
-            <Route path="/create-lesson" element={<CreateLesson />} />
-            <Route path="/lesson/:id" element={<LessonDetail />} />
-            <Route path="/edit-lesson/:id" element={<EditLesson />} />
-            <Route path="/settings" element={<Settings />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/generate" element={<Index />} />
+          <Route path="/create-lesson" element={<CreateLesson />} />
+          <Route path="/lesson/:id" element={<LessonDetail />} />
+          <Route path="/edit-lesson/:id" element={<EditLesson />} />
+          <Route path="/settings" element={<Settings />} />
+          
+          {/* Nouvelles routes pour la gestion des élèves */}
+          <Route path="/students" element={<StudentsList />} />
+          <Route path="/students/:id" element={<StudentDetail />} />
+          
+          {/* Nouvelles routes pour les évaluations */}
+          <Route path="/evaluations" element={<EvaluationsList />} />
+          <Route path="/evaluations/:id" element={<EvaluationDetail />} />
+          
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
 );
 
 export default App;

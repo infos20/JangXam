@@ -8,19 +8,26 @@ export function useGeminiApiKey() {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    const storedApiKey = localStorage.getItem(GEMINI_API_KEY_STORAGE_KEY) || '';
-    setApiKey(storedApiKey);
-    setIsLoaded(true);
+    // Vérifier si l'application s'exécute dans un navigateur avant d'accéder au localStorage
+    if (typeof window !== 'undefined') {
+      const storedApiKey = localStorage.getItem(GEMINI_API_KEY_STORAGE_KEY) || '';
+      setApiKey(storedApiKey);
+      setIsLoaded(true);
+    }
   }, []);
 
   const saveApiKey = (newApiKey: string) => {
     setApiKey(newApiKey);
-    localStorage.setItem(GEMINI_API_KEY_STORAGE_KEY, newApiKey);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(GEMINI_API_KEY_STORAGE_KEY, newApiKey);
+    }
   };
 
   const clearApiKey = () => {
     setApiKey('');
-    localStorage.removeItem(GEMINI_API_KEY_STORAGE_KEY);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(GEMINI_API_KEY_STORAGE_KEY);
+    }
   };
 
   return {

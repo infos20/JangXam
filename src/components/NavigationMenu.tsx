@@ -7,7 +7,9 @@ import {
   FilePlus, 
   BookOpen, 
   ImageIcon, 
-  Settings as SettingsIcon 
+  Settings as SettingsIcon,
+  Users,
+  ClipboardList
 } from 'lucide-react';
 
 interface NavItem {
@@ -35,6 +37,16 @@ const NavigationMenu = () => {
       icon: BookOpen,
       label: 'Leçons',
       path: '/lessons',
+    },
+    {
+      icon: Users,
+      label: 'Élèves',
+      path: '/students',
+    },
+    {
+      icon: ClipboardList,
+      label: 'Évaluations',
+      path: '/evaluations',
     },
     {
       icon: ImageIcon,
