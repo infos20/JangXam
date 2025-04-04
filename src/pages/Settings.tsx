@@ -1,190 +1,107 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useApiKey } from '@/hooks/use-api-key';
+import ApiKeyInput from '@/components/ApiKeyInput';
+import { useGeminiApiKey } from '@/hooks/use-gemini-api-key';
+import GeminiApiKeyInput from '@/components/GeminiApiKeyInput';
 import { Separator } from '@/components/ui/separator';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Save, User } from 'lucide-react';
-import { toast } from 'sonner';
-
-interface UserSettings {
-  name: string;
-  email: string;
-  schoolName: string;
-  darkMode: boolean;
-  defaultSubject: string;
-  autoSave: boolean;
-  notificationsEnabled: boolean;
-}
+import { ArrowLeft, Settings as SettingsIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
   const navigate = useNavigate();
-  const [settings, setSettings] = useState<UserSettings>({
-    name: 'Jean Dupont',
-    email: 'jean.dupont@education.fr',
-    schoolName: 'École Primaire Jules Ferry',
-    darkMode: true,
-    defaultSubject: 'Français',
-    autoSave: true,
-    notificationsEnabled: true
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setSettings(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSwitchChange = (name: string, checked: boolean) => {
-    setSettings(prev => ({ ...prev, [name]: checked }));
-  };
-
-  const handleSelectChange = (name: string, value: string) => {
-    setSettings(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real app, this would save to localStorage or an API
-    toast.success('Paramètres enregistrés avec succès');
-  };
+  const { apiKey, saveApiKey, clearApiKey, isLoaded } = useApiKey();
+  const { apiKey: geminiApiKey, saveApiKey: saveGeminiApiKey, clearApiKey: clearGeminiApiKey, isLoaded: geminiLoaded } = useGeminiApiKey();
 
   return (
     <div className="min-h-screen bg-background text-foreground p-4 md:p-8">
-      <header className="mb-6">
-        <div className="flex items-center mb-4">
-          <Button variant="ghost" onClick={() => navigate('/')} className="mr-4">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <h1 className="text-3xl font-bold">Paramètres</h1>
-        </div>
-        <p className="text-muted-foreground">Personnalisez votre expérience d'utilisation</p>
+      <header className="mb-6 flex items-center">
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mr-4">
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+        <h1 className="text-3xl font-bold flex items-center gap-2">
+          <SettingsIcon className="h-6 w-6" />
+          Paramètres
+        </h1>
       </header>
 
-      <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5" />
-              Informations personnelles
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Nom complet</Label>
-              <Input 
-                id="name" 
-                name="name" 
-                value={settings.name} 
-                onChange={handleChange} 
-              />
-            </div>
+      <div className="max-w-4xl mx-auto space-y-8">
+        <Tabs defaultValue="api">
+          <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
+            <TabsTrigger value="api">Clés API</TabsTrigger>
+            <TabsTrigger value="app">Application</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="api" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Clés API pour les Modèles IA</CardTitle>
+                <CardDescription>
+                  Configurez vos clés API pour utiliser les fonctionnalités d'intelligence artificielle.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {isLoaded && (
+                  <ApiKeyInput 
+                    apiKey={apiKey}
+                    onSave={saveApiKey}
+                    onClear={clearApiKey}
+                  />
+                )}
+                
+                <Separator className="my-6" />
+                
+                {geminiLoaded && (
+                  <GeminiApiKeyInput 
+                    apiKey={geminiApiKey}
+                    onSave={saveGeminiApiKey}
+                    onClear={clearGeminiApiKey}
+                  />
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                name="email" 
-                type="email"
-                value={settings.email} 
-                onChange={handleChange} 
-              />
-            </div>
+          <TabsContent value="app">
+            <Card>
+              <CardHeader>
+                <CardTitle>Paramètres de l'Application</CardTitle>
+                <CardDescription>
+                  Configurez les préférences générales de l'application.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Langue par défaut</h3>
+                  <div className="flex space-x-2">
+                    <Button variant="outline" className="bg-primary text-primary-foreground">
+                      Français
+                    </Button>
+                    <Button variant="outline">
+                      English
+                    </Button>
+                  </div>
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="schoolName">Nom de l'école</Label>
-              <Input 
-                id="schoolName" 
-                name="schoolName" 
-                value={settings.schoolName} 
-                onChange={handleChange} 
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Préférences de l'application</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-medium">Mode sombre</h3>
-                <p className="text-sm text-muted-foreground">Activer l'interface en mode sombre</p>
-              </div>
-              <Switch 
-                checked={settings.darkMode}
-                onCheckedChange={(checked) => handleSwitchChange('darkMode', checked)}
-              />
-            </div>
-            
-            <Separator />
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-medium">Sauvegarde automatique</h3>
-                <p className="text-sm text-muted-foreground">Enregistrer automatiquement vos modifications</p>
-              </div>
-              <Switch 
-                checked={settings.autoSave}
-                onCheckedChange={(checked) => handleSwitchChange('autoSave', checked)}
-              />
-            </div>
-            
-            <Separator />
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-medium">Notifications</h3>
-                <p className="text-sm text-muted-foreground">Recevoir des notifications dans l'application</p>
-              </div>
-              <Switch 
-                checked={settings.notificationsEnabled}
-                onCheckedChange={(checked) => handleSwitchChange('notificationsEnabled', checked)}
-              />
-            </div>
-            
-            <Separator />
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="defaultSubject">Matière par défaut</Label>
-                <Select 
-                  value={settings.defaultSubject} 
-                  onValueChange={(value) => handleSelectChange('defaultSubject', value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Sélectionnez" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Français">Français</SelectItem>
-                    <SelectItem value="Mathématiques">Mathématiques</SelectItem>
-                    <SelectItem value="Sciences">Sciences</SelectItem>
-                    <SelectItem value="Histoire">Histoire</SelectItem>
-                    <SelectItem value="Géographie">Géographie</SelectItem>
-                    <SelectItem value="Musique">Musique</SelectItem>
-                    <SelectItem value="Arts Plastiques">Arts Plastiques</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline" onClick={() => navigate('/')}>
-            Annuler
-          </Button>
-          <Button type="submit">
-            <Save className="mr-2 h-4 w-4" />
-            Enregistrer les paramètres
-          </Button>
-        </div>
-      </form>
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Modèle de fiche par défaut</h3>
+                  <div className="flex space-x-2">
+                    <Button variant="outline">
+                      Standard
+                    </Button>
+                    <Button variant="outline" className="bg-primary text-primary-foreground">
+                      Sénégalais
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };
