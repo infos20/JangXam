@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import NavigationMenu from '@/components/NavigationMenu';
 import { Separator } from '@/components/ui/separator';
@@ -14,9 +13,9 @@ const EvaluationsList = () => {
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [filteredEvaluations, setFilteredEvaluations] = useState<Evaluation[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [levelFilter, setLevelFilter] = useState('');
-  const [subjectFilter, setSubjectFilter] = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
+  const [levelFilter, setLevelFilter] = useState('all');
+  const [subjectFilter, setSubjectFilter] = useState('all');
+  const [typeFilter, setTypeFilter] = useState('all');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -159,17 +158,17 @@ const EvaluationsList = () => {
     }
     
     // Filter by level
-    if (levelFilter) {
+    if (levelFilter !== 'all') {
       results = results.filter(evaluation => evaluation.level === levelFilter);
     }
     
     // Filter by subject
-    if (subjectFilter) {
+    if (subjectFilter !== 'all') {
       results = results.filter(evaluation => evaluation.subject === subjectFilter);
     }
     
     // Filter by type
-    if (typeFilter) {
+    if (typeFilter !== 'all') {
       results = results.filter(evaluation => evaluation.type === typeFilter);
     }
     
@@ -178,9 +177,9 @@ const EvaluationsList = () => {
 
   const clearFilters = () => {
     setSearchQuery('');
-    setLevelFilter('');
-    setSubjectFilter('');
-    setTypeFilter('');
+    setLevelFilter('all');
+    setSubjectFilter('all');
+    setTypeFilter('all');
   };
 
   // Extract unique subjects and levels for filter options
@@ -228,7 +227,7 @@ const EvaluationsList = () => {
                   <SelectValue placeholder="Niveau" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Tous les niveaux</SelectItem>
+                  <SelectItem value="all">Tous les niveaux</SelectItem>
                   {levels.map((level) => (
                     <SelectItem key={level} value={level}>{level}</SelectItem>
                   ))}
@@ -240,7 +239,7 @@ const EvaluationsList = () => {
                   <SelectValue placeholder="Matière" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Toutes les matières</SelectItem>
+                  <SelectItem value="all">Toutes les matières</SelectItem>
                   {subjects.map((subject) => (
                     <SelectItem key={subject} value={subject}>{subject}</SelectItem>
                   ))}
@@ -252,13 +251,13 @@ const EvaluationsList = () => {
                   <SelectValue placeholder="Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Tous les types</SelectItem>
+                  <SelectItem value="all">Tous les types</SelectItem>
                   <SelectItem value="formative">Formative</SelectItem>
                   <SelectItem value="summative">Sommative</SelectItem>
                 </SelectContent>
               </Select>
               
-              {(searchQuery || levelFilter || subjectFilter || typeFilter) && (
+              {(searchQuery || levelFilter !== 'all' || subjectFilter !== 'all' || typeFilter !== 'all') && (
                 <Button variant="outline" onClick={clearFilters}>
                   Effacer les filtres
                 </Button>
