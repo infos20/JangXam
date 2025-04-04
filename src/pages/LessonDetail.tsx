@@ -34,6 +34,11 @@ interface Lesson {
   documentation?: string;
   deroulementLecon?: any;
   exercices?: any;
+  etape?: string;
+  numero?: string;
+  activities?: string;
+  objectifsSpecifiques?: string;
+  contenu?: string;
 }
 
 const LessonDetail = () => {
@@ -80,13 +85,9 @@ const LessonDetail = () => {
         '3': {
           id: 3,
           title: 'Le Corps Humain',
-          subject: 'Sciences',
-          level: 'CE1',
-          date: '2025-04-03',
-          title: 'Le Corps Humain',
           modelType: 'senegalais',
-          level: 'CE1',
           subject: 'Sciences',
+          level: 'CE1',
           date: '2025-04-03',
           etape: 'Première étape',
           numero: '3',
