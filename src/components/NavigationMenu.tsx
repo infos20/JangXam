@@ -1,101 +1,66 @@
-
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { 
-  Home, 
-  FilePlus, 
-  BookOpen, 
-  ImageIcon, 
-  Settings as SettingsIcon,
-  Users,
-  ClipboardList
-} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle
+} from "@/components/ui/navigation-menu"
+import { BookOpen, ClipboardList, Users, Settings as SettingsIcon } from 'lucide-react';
 
-interface NavItem {
-  icon: React.ElementType;
-  label: string;
-  path: string;
-}
-
-const NavigationMenu = () => {
-  const location = useLocation();
-  const currentPath = location.pathname;
-  
-  const navItems: NavItem[] = [
-    {
-      icon: Home,
-      label: 'Accueil',
-      path: '/',
-    },
-    {
-      icon: FilePlus,
-      label: 'Créer',
-      path: '/create-lesson',
-    },
-    {
-      icon: BookOpen,
-      label: 'Leçons',
-      path: '/lessons',
-    },
-    {
-      icon: Users,
-      label: 'Élèves',
-      path: '/students',
-    },
-    {
-      icon: ClipboardList,
-      label: 'Évaluations',
-      path: '/evaluations',
-    },
-    {
-      icon: ImageIcon,
-      label: 'Génération',
-      path: '/generate',
-    },
-    {
-      icon: SettingsIcon,
-      label: 'Paramètres',
-      path: '/settings',
-    },
-  ];
-
-  const isActive = (path: string) => {
-    if (path === '/') {
-      return currentPath === '/';
-    }
-    return currentPath.startsWith(path);
-  };
-
+const MainNav = () => {
   return (
-    <nav className="sticky top-0 z-30 w-full bg-background border-b border-border/40 px-4 py-2">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="flex items-center">
-          <Link to="/" className="flex items-center mr-6">
-            <BookOpen className="h-6 w-6 text-primary mr-2" />
-            <span className="font-bold text-lg hidden sm:inline">EduPlanr</span>
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <Link to="/" className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink>
+              <ClipboardList className="mr-2 h-4 w-4" />
+              Tableau de Bord
+            </NavigationMenuLink>
           </Link>
-        </div>
-        
-        <div className="flex items-center space-x-1">
-          {navItems.map((item) => (
-            <Button
-              key={item.path}
-              variant={isActive(item.path) ? "default" : "ghost"}
-              size="sm"
-              asChild
-              className="sm:flex gap-2"
-            >
-              <Link to={item.path}>
-                <item.icon className="h-4 w-4" />
-                <span className="hidden sm:inline">{item.label}</span>
-              </Link>
-            </Button>
-          ))}
-        </div>
-      </div>
-    </nav>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link to="/students" className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink>
+              <Users className="mr-2 h-4 w-4" />
+              Élèves
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link to="/evaluations" className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink>
+              <ClipboardList className="mr-2 h-4 w-4" />
+              Évaluations
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link to="/create-card" className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink>
+              <BookOpen className="mr-2 h-4 w-4" />
+              Fiches Pédagogiques
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link to="/settings" className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink>
+              <SettingsIcon className="mr-2 h-4 w-4" />
+              Paramètres
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 };
 
-export default NavigationMenu;
+export default MainNav;
+

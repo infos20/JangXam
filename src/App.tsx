@@ -16,6 +16,7 @@ import StudentsList from "./pages/StudentsList";
 import StudentDetail from "./pages/StudentDetail";
 import EvaluationsList from "./pages/EvaluationsList";
 import EvaluationDetail from "./pages/EvaluationDetail";
+import CreatePedagogicalCard from "./pages/CreatePedagogicalCard";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,9 @@ const App = () => (
           {/* Nouvelles routes pour les évaluations */}
           <Route path="/evaluations" element={<EvaluationsList />} />
           <Route path="/evaluations/:id" element={<EvaluationDetail />} />
+          
+          {/* Nouvelle route pour la création de fiches pédagogiques */}
+          <Route path="/create-card" element={<CreatePedagogicalCard />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
